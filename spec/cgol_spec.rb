@@ -11,7 +11,7 @@ class CellGenerator
 end
 
 module Cell
-  attr_reader :neighbors, :state
+  attr_reader :neighbors
   def initialize
     @neighbors = []
   end
@@ -22,7 +22,7 @@ module Cell
     [2,3].include? live_neighbor_count
   end
   def live_neighbor_count
-    @neighbors.select {|c| c.state == :alive}.size
+    @neighbors.select {|c| c.alive?}.size
   end  
 end
 
@@ -32,10 +32,16 @@ class LiveCell
     super
     @state = :alive
   end
+  def alive?
+    true
+  end
 end
 
 class DeadCell
   include Cell
+  def alive?
+    false
+  end
 end
 
 describe CellGenerator do
