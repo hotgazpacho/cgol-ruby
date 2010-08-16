@@ -1,13 +1,13 @@
 require 'spec'
 
 module Cell
-  attr_reader :neighbors
+  attr_reader :neighbors, :state
   def initialize
     @neighbors = []
   end
   private
   def live_neighbor_count
-    @neighbors.select {|c| c.is_a? LiveCell}.size
+    @neighbors.select {|c| c.state == :alive}.size
   end
   def fertile?
     live_neighbor_count == 3
@@ -19,6 +19,10 @@ end
 
 class LiveCell
   include Cell
+  def initialize
+    super
+    @state = :alive
+  end
   def next_generation
     sustainable? ? LiveCell.new : DeadCell.new
   end
