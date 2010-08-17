@@ -44,6 +44,77 @@ class DeadCell
   end
 end
 
+require'matrix'
+class Grid2D < Matrix
+  def neighbors(i,j)
+    neighbors = [] 
+    xs(i).each do |x|
+      ys(j).each do |y|
+        neighbors << self.[](x,y) unless x == i and y == j
+      end
+    end
+    neighbors
+  end
+
+  protected
+  def xs(i)
+    [i-1, i, i+1].delete_if {|n| n < 0 or n >= self.row_size}
+  end
+  def ys(j)
+    [j-1, j, j+1].delete_if {|n| n < 0 or n >= self.column_size}
+  end
+end
+
+describe Grid2D do
+  describe "#neighbors provides a list of adjacent elements for an element" do
+    before :each do
+      @g = Grid2D[
+        [ 0, 1, 2, 3],
+        [ 4, 5, 6, 7],
+        [ 8, 9,10,11],
+        [12,13,14,15],
+        [16,17,18,19]
+      ]
+    end
+    it "not on an edge" do
+      neighbors = @g.neighbors(1,1)
+      neighbors.should =~ [0,1,2,4,6,8,9,10]
+    end
+    it "in the upper left corner" do
+      neighbors = @g.neighbors(0,0)
+      neighbors.should =~ [1,4,5]
+    end
+    it "in the upper right corner" do
+      neighbors = @g.neighbors(0,3)
+      neighbors.should =~ [2,6,7]
+    end
+    it "in the lower right corner" do
+      neighbors = @g.neighbors(4,3)
+      neighbors.should =~ [14,15,18]
+    end
+    it "in the lower left corner" do
+      neighbors = @g.neighbors(4,0)
+      neighbors.should =~ [12,13,17]
+    end
+    it "on the top edge" do
+      neighbors = @g.neighbors(0,2)
+      neighbors.should =~ [1,3,5,6,7]
+    end
+    it "on the right edge" do
+      neighbors = @g.neighbors(2,3)
+      neighbors.should =~ [6,7,10,14,15]
+    end
+    it "on the bottom edge" do
+      neighbors = @g.neighbors(4,1)
+      neighbors.should =~ [12,13,14,16,18]
+    end
+    it "on the left edge" do
+      neighbors = @g.neighbors(2,0)
+      neighbors.should =~ [4,5,9,12,13]
+    end
+  end
+end
+
 describe CellGenerator do
   before :each do
     @generator = CellGenerator.new
