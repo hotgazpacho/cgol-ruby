@@ -1,0 +1,3 @@
+Autotest.add_hook :initialize do |at|
+  %w{.git tmp temp vendor spec/integration}.each {|exception| at.add_exception(exception)}
+end
