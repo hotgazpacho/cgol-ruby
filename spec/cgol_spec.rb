@@ -51,14 +51,11 @@ class Grid2D
 
   def neighbors(x,y)
     adj = []
-    adj << self[x-1,y]
-    adj << self[x+1,y] 
-    adj << self[x-1,y-1]
-    adj << self[x,y-1]
-    adj << self[x+1,y-1]
-    adj << self[x-1,y+1]
-    adj << self[x,y+1]
-    adj << self[x+1,y+1]
+    (x-1 .. x+1).each {|x_pos|
+      (y-1 .. y+1).each {|y_pos|
+        adj << self[x_pos,y_pos] unless (x == x_pos and y == y_pos)
+      }
+    }
     adj
   end
 
