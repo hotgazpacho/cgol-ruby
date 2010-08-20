@@ -44,31 +44,71 @@ class DeadCell
   end
 end
 
-require'matrix'
-class Grid2D < Matrix
-  def neighbors(i,j)
-    neighbors = [] 
-    xs(i).each do |x|
-      ys(j).each do |y|
-        neighbors << self.[](x,y) unless x == i and y == j
-      end
-    end
-    neighbors
+class Grid2D
+  def initialize(data)
+    @data = data
   end
 
-  protected
-  def xs(i)
-    [i-1, i, i+1].delete_if {|n| n < 0 or n >= self.row_size}
+  def neighbors(x,y)
+    adj = []
+    adj << self[x-1,y]
+    adj << self[x+1,y] 
+    adj << self[x-1,y-1]
+    adj << self[x,y-1]
+    adj << self[x+1,y-1]
+    adj << self[x-1,y+1]
+    adj << self[x,y+1]
+    adj << self[x+1,y+1]
+    adj
   end
-  def ys(j)
-    [j-1, j, j+1].delete_if {|n| n < 0 or n >= self.column_size}
+
+  def [](x,y)
+    if x < 0 then x = self.width - x.abs end
+    if x >= self.width then x = x - self.width end
+    if y >= self.height then y = y - self.height end
+    @data[y][x]
   end
+
+  def width
+    @data.first.size
+  end
+
+  def height
+    @data.size
+  end
+
 end
 
 describe Grid2D do
-  describe "#neighbors provides a list of adjacent elements for an element" do
+  describe "#[](x,y)" do
     before :each do
-      @g = Grid2D[
+      @g = Grid2D.new [
+        [ 0, 1, 2, 3],
+        [ 4, 5, 6, 7],
+        [ 8, 9,10,11],
+        [12,13,14,15],
+        [16,17,18,19]
+      ]
+    end
+    it "fetches the value when both x and y are within the range of width and height" do
+      @g[2,1].should equal 6
+    end
+    it "fetches the value when x is negative and y is within the range of column height" do
+      @g[-1,0].should equal 3
+    end
+    it "fetches the value when x is greater the range of row width and y is within the range of column height" do
+      @g[4,0].should equal 0
+    end
+    it "fetches the value when x is within the row width and y is negative" do
+      @g[1,-1].should equal 17
+    end
+    it "fetches the value when x is within the row width and y is greater than the row height" do
+      @g[2,5].should equal 2
+    end
+  end
+  describe "#neighbors(x,y) provides a list of adjacent elements for an element" do
+    before :each do
+      @g = Grid2D.new [
         [ 0, 1, 2, 3],
         [ 4, 5, 6, 7],
         [ 8, 9,10,11],
@@ -82,35 +122,35 @@ describe Grid2D do
     end
     it "in the upper left corner" do
       neighbors = @g.neighbors(0,0)
-      neighbors.should =~ [1,4,5]
+      neighbors.should =~ [1,3,4,5,7,16,17,19]
     end
     it "in the upper right corner" do
-      neighbors = @g.neighbors(0,3)
-      neighbors.should =~ [2,6,7]
+      neighbors = @g.neighbors(3,0)
+      neighbors.should =~ [0,2,4,6,7,16,18,19]
     end
     it "in the lower right corner" do
-      neighbors = @g.neighbors(4,3)
-      neighbors.should =~ [14,15,18]
+      neighbors = @g.neighbors(3,4)
+      neighbors.should =~ [14,15,18,12,16,2,3,0]
     end
     it "in the lower left corner" do
-      neighbors = @g.neighbors(4,0)
-      neighbors.should =~ [12,13,17]
-    end
-    it "on the top edge" do
-      neighbors = @g.neighbors(0,2)
-      neighbors.should =~ [1,3,5,6,7]
-    end
-    it "on the right edge" do
-      neighbors = @g.neighbors(2,3)
-      neighbors.should =~ [6,7,10,14,15]
-    end
-    it "on the bottom edge" do
-      neighbors = @g.neighbors(4,1)
-      neighbors.should =~ [12,13,14,16,18]
+      neighbors = @g.neighbors(0,4)
+      neighbors.should =~ [12,13,15,17,19,0,1,3]
     end
     it "on the left edge" do
+      neighbors = @g.neighbors(0,2)
+      neighbors.should =~ [4,5,7,9,11,12,13,15]
+    end
+    it "on the right edge" do
+      neighbors = @g.neighbors(3,2)
+      neighbors.should =~ [4,6,7,8,10,12,14,15]
+    end
+    it "on the bottom edge" do
+      neighbors = @g.neighbors(1,4)
+      neighbors.should =~ [12,13,14,16,18,0,1,2]
+    end
+    it "on the top edge" do
       neighbors = @g.neighbors(2,0)
-      neighbors.should =~ [4,5,9,12,13]
+      neighbors.should =~ [1,3,5,6,7,17,18,19]
     end
   end
 end
