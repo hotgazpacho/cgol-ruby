@@ -3,6 +3,13 @@ class Grid2D
     @data = data
   end
 
+  def each(&blk)
+    @data.flatten.each(&blk)
+    #@data.each do |row|
+    #  row.each &blk
+    #end
+  end
+
   def neighbors(x,y)
     adj = []
     (x-1 .. x+1).each do |x_pos|
