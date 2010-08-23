@@ -1,9 +1,18 @@
 require 'grid2d'
 
 describe Grid2D do
+  describe "initialize" do
+    it "with only a height and a width all elemenst are nil" do
+      g = Grid2D.new 3,3
+      list = []
+      g.each {|element| list << element}
+      list.size.should eql 9
+      list.all?{|element| element.nil?}.should be_true
+    end
+  end
   describe "#[](x,y)" do
     before :each do
-      @g = Grid2D.new [
+      @g = Grid2D.new 5, 4, [
         [ 0, 1, 2, 3],
         [ 4, 5, 6, 7],
         [ 8, 9,10,11],
@@ -29,7 +38,7 @@ describe Grid2D do
   end
   describe "#neighbors(x,y) provides a list of adjacent elements for an element" do
     before :each do
-      @g = Grid2D.new [
+      @g = Grid2D.new 5, 4, [
         [ 0, 1, 2, 3],
         [ 4, 5, 6, 7],
         [ 8, 9,10,11],
@@ -75,9 +84,23 @@ describe Grid2D do
     end
   end
 
+  describe "#[]=" do
+    before :each do
+      @g = Grid2D.new 3, 3, [
+        [0,1,2],
+        [3,4,5],
+        [6,7,8]
+      ]
+    end
+    it "assigns the value to the specifed element in the grid" do
+      @g[1,1]= 42
+      @g[1,1].should eql 42
+    end
+  end
+
   describe "#each" do
     before :each do
-      @g = Grid2D.new [
+      @g = Grid2D.new 5, 4, [
         [ 0, 1, 2, 3],
         [ 4, 5, 6, 7],
         [ 8, 9,10,11],
@@ -94,7 +117,7 @@ describe Grid2D do
 
   describe "#each_with_position" do
     before :each do
-      @g = Grid2D.new [
+      @g = Grid2D.new 5, 4, [
         [ 0, 1, 2, 3],
         [ 4, 5, 6, 7],
         [ 8, 9,10,11],
@@ -118,12 +141,12 @@ describe Grid2D do
 
   describe "equality" do
     before :each do
-        @grid1 = Grid2D.new [
+        @grid1 = Grid2D.new 3, 3, [
           [0,1,2],
           [3,4,5],
           [6,7,8]
         ]
-        @grid2 = Grid2D.new [
+        @grid2 = Grid2D.new 3, 3, [
           [0,1,2],
           [3,4,5],
           [6,7,8]

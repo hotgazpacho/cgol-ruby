@@ -1,6 +1,14 @@
 class Grid2D
-  def initialize(data)
-    @data = data
+  attr_reader :height, :width
+
+  def initialize(height, width, data = [])
+    @height = height
+    @width = width
+    if data.empty?
+      @data = Array.new(height) { Array.new(width) }
+    else
+      @data = data
+    end
   end
 
   def ==(other)
@@ -40,18 +48,14 @@ class Grid2D
     @data[y][x]
   end
 
+  def []=(x,y,value)
+    @data[y][x] = value
+  end
+
   protected
   def data
     @data
   end
 
-  public
-  def width
-    @data.first.size
-  end
-
-  def height
-    @data.size
-  end
 end
 

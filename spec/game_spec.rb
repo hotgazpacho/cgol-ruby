@@ -7,7 +7,7 @@ describe Game, "when given a seed that is a Still Life" do
   end
   describe "Block" do
     it "#tick returns a new Block" do
-      seed = Grid2D.new [
+      seed = Grid2D.new 4,4, [
         [0,0,0,0],
         [0,1,1,0],
         [0,1,1,0],
@@ -20,7 +20,7 @@ describe Game, "when given a seed that is a Still Life" do
   end
   describe "Beehive" do
     it "#tick returns a new Beehive" do
-      seed = Grid2D.new [
+      seed = Grid2D.new 5, 6, [
         [0,0,0,0,0,0],
         [0,0,1,1,0,0],
         [0,1,0,0,1,0],
@@ -34,7 +34,7 @@ describe Game, "when given a seed that is a Still Life" do
   end
   describe "Loaf" do
     it "#tick returns a new Loaf" do
-      seed = Grid2D.new [
+      seed = Grid2D.new 6, 6, [
         [0,0,0,0,0,0],
         [0,0,1,1,0,0],
         [0,1,0,0,1,0],
@@ -49,7 +49,7 @@ describe Game, "when given a seed that is a Still Life" do
   end
   describe "Boat" do
     it "#tick returns a new Boat" do
-      seed = Grid2D.new [
+      seed = Grid2D.new 5, 5, [
         [0,0,0,0,0],
         [0,1,1,0,0],
         [0,1,0,1,0],
