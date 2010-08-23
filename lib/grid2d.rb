@@ -45,6 +45,7 @@ class Grid2D
     @data
   end
 
+  public
   def width
     @data.first.size
   end
