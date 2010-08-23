@@ -5,9 +5,14 @@ class Grid2D
 
   def each(&blk)
     @data.flatten.each(&blk)
-    #@data.each do |row|
-    #  row.each &blk
-    #end
+  end
+
+  def each_with_position(&blk)
+    @data.each_index do |y|
+      @data[y].each_index do |x|
+        yield self[x,y], { :x => x, :y => y}
+      end
+    end
   end
 
   def neighbors(x,y)

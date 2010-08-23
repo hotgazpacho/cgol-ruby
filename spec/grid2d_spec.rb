@@ -90,10 +90,30 @@ describe Grid2D do
       @g.each { |e| list << e}
       list.should =~ (0..19).to_a
     end
-    it "yields each element in the grid with its coordinates" do
-      list = []
-      pending
-    end
   end
+
+  describe "#each_with_position" do
+    before :each do
+      @g = Grid2D.new [
+        [ 0, 1, 2, 3],
+        [ 4, 5, 6, 7],
+        [ 8, 9,10,11],
+        [12,13,14,15],
+        [16,17,18,19]
+      ]
+    end
+
+    it "yields each element in the grid with its position" do
+      list = []
+      @g.each_with_position { |element, position| list << [element, position]}
+      expected = []
+      (0..4).each do |y|
+        (0..3).each do |x|
+          expected << [ @g[x,y], { :x => x, :y => y} ]
+        end
+      end
+      list.should =~ expected
+    end
+ end
 end
 
