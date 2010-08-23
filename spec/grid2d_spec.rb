@@ -114,6 +114,31 @@ describe Grid2D do
       end
       list.should =~ expected
     end
- end
+  end
+
+  describe "equality" do
+    before :each do
+        @grid1 = Grid2D.new [
+          [0,1,2],
+          [3,4,5],
+          [6,7,8]
+        ]
+        @grid2 = Grid2D.new [
+          [0,1,2],
+          [3,4,5],
+          [6,7,8]
+        ]
+    end
+    describe "#==" do
+      it "should return true when each element is equal to the corresponding element in the other" do
+        (@grid1 == @grid2).should be_true
+      end
+    end
+    describe "eql?" do
+      it "should return true when each element is equal to the corresponding element in the other" do
+        @grid1.eql?(@grid2).should be_true
+      end
+    end
+  end
 end
 

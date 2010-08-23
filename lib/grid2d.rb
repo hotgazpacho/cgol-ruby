@@ -3,6 +3,14 @@ class Grid2D
     @data = data
   end
 
+  def ==(other)
+    @data.eql? other.data
+  end
+
+  def eql?(other)
+    self == other
+  end
+
   def each(&blk)
     @data.flatten.each(&blk)
   end
@@ -32,6 +40,11 @@ class Grid2D
     @data[y][x]
   end
 
+  protected
+  def data
+    @data
+  end
+
   def width
     @data.first.size
   end
@@ -39,6 +52,5 @@ class Grid2D
   def height
     @data.size
   end
-
 end
 
