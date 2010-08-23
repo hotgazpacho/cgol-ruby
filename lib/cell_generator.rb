@@ -4,7 +4,7 @@ require 'dead_cell'
 
 class CellGenerator
   def next_generation(cell)
-    if cell.sustainable? or cell.fertile?
+    if (cell.alive? and cell.sustainable?) or (!cell.alive? and cell.fertile?)
       LiveCell.new
     else
       DeadCell.new

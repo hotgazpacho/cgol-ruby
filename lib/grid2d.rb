@@ -52,6 +52,17 @@ class Grid2D
     @data[y][x] = value
   end
 
+  def inspect
+    inspect_string = ''
+    y = -1
+    self.each_with_position do |element, position|
+      inspect_string << "\n" if position[:y] > y
+      inspect_string << element.inspect
+      y = position[:y]
+    end
+    inspect_string << "\n"
+  end
+
   protected
   def data
     @data
